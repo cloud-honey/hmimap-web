@@ -1,18 +1,19 @@
-import React, { useCallback } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 
 export default function FileUploader({ onFileSelect }) {
-  const [dragging, setDragging] = React.useState(false)
+  const [dragging, setDragging] = useState(false)
+  const [selected, setSelected] = useState(null)
 
   const handleDrop = useCallback((e) => {
     e.preventDefault()
     setDragging(false)
     const file = e.dataTransfer.files[0]
-    if (file) onFileSelect(file)
+    if (file) { setSelected(file); onFileSelect(file) }
   }, [onFileSelect])
 
   const handleChange = (e) => {
     const file = e.target.files[0]
-    if (file) onFileSelect(file)
+    if (file) { setSelected(file); onFileSelect(file) }
   }
 
   return (
