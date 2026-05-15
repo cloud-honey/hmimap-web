@@ -3,6 +3,7 @@ import StepIndicator from '../components/StepIndicator'
 import FileUploader from '../components/FileUploader'
 import StageRunner from '../components/StageRunner'
 import ResultPreview from '../components/ResultPreview'
+import FeedbackPanel from '../components/FeedbackPanel'
 
 const STEPS = [
   { label: '전처리', desc: 'Layer mapping', action: 'preprocess' },
@@ -141,21 +142,27 @@ export default function Home() {
 
           {/* Current Step Result Preview */}
           {stepResults[currentStep] && (
-            <ResultPreview
-              step={currentStep}
-              result={stepResults[currentStep]}
-              steps={STEPS}
-              onPass={() => {
-                if (currentStep < STEPS.length - 1) {
-                  setCurrentStep(currentStep + 1)
-                }
-              }}
-              onRetry={() => {
-                const newResults = { ...stepResults }
-                delete newResults[currentStep]
-                setStepResults(newResults)
-              }}
-            />
+            <>
+              <ResultPreview
+                step={currentStep}
+                result={stepResults[currentStep]}
+                steps={STEPS}
+                onPass={() => {
+                  if (currentStep < STEPS.length - 1) {
+                    setCurrentStep(currentStep + 1)
+                  }
+                }}
+                onRetry={() => {
+                  const newResults = { ...stepResults }
+                  delete newResults[currentStep]
+                  setStepResults(newResults)
+                }}
+              />
+              {/* Feedback Panel */}
+              {currentStep === STEPS.length - 1 && (
+                <FeedbackPanel runId={runId} currentStep={currentStep} />
+              )}
+            </>
           )}
         </div>
       )}
