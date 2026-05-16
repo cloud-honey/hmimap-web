@@ -3,8 +3,16 @@
 import sys
 import json
 
+import os
+
+# Resolve pipeline path relative to this script's location
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+# Go up from server/ to web/ then to hmimap-complete root
+PACKAGE_ROOT = os.path.dirname(os.path.dirname(SCRIPT_DIR))
+PIPELINE_SRC = os.path.join(PACKAGE_ROOT, 'pipeline', 'src')
+
 # Add pipeline src to path
-sys.path.insert(0, '/home/sykim/workspace/hmi-map-pipeline/src')
+sys.path.insert(0, PIPELINE_SRC)
 
 action = sys.argv[1] if len(sys.argv) > 1 else 'parse'
 
