@@ -9,9 +9,11 @@ import { getDb, queries } from './db/db.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
-const THIS_DIR = __dirname
-const PROJECT_ROOT = '/home/sykim/workspace/hmi-map-pipeline'
-const PORT = 4003
+const WEB_ROOT = resolve(__dirname)
+const PACKAGE_ROOT = resolve(__dirname, '..')
+const PIPELINE_ROOT = resolve(PACKAGE_ROOT, 'pipeline')
+const DIST = resolve(WEB_ROOT, 'dist')
+const PORT = process.env.PORT || 4003
 
 const app = express()
 app.use(cors())
@@ -83,7 +85,7 @@ app.post('/api/run-full', upload.single('file'), async (req, res) => {
   }, null, 2))
 
   try {
-    const out = await runPython([PROJECT_ROOT + '/src/pipeline/main_pipeline.py', '--config', cfgPath])
+    const out = await runPython([PIPELINE_ROOT + '/src/pipeline/main_pipeline.py', '--config', cfgPath])
     queries.updateRunStatus(db, runId, 'completed', null, new Date().toISOString())
     res.json({ run_id: runId, results: out })
   } catch (err) {
@@ -142,7 +144,7 @@ app.use(express.static(DIST))
 // ─── Helper: run python3 ──────────────────────────────────────
 function runPython(args) {
   return new Promise((resolve, reject) => {
-    const proc = spawn('python3', args, { cwd: PROJECT_ROOT })
+    const proc = spawn('python3', args, { cwd: PIPELINE_ROOT })
     let stdout = '', stderr = ''
     proc.stdout.on('data', d => stdout += d)
     proc.stderr.on('data', d => stderr += d)

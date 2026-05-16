@@ -3,7 +3,7 @@ module.exports = {
     {
       name: 'hmimap-api',
       script: 'server/index.js',
-      cwd: '/home/sykim/workspace/hmimap-web',
+      cwd: __dirname,
       env: {
         NODE_ENV: 'production',
         PORT: 4003,
