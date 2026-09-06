@@ -119,7 +119,43 @@ CAD 도면(DXF/DWG)을 입력으로 하여 산업용 3D Isometric(ISO) HMI 배�
 
 ## 4. Installation & Setup
 
-### 4.1 Prerequisites
+### 4.1 On a New PC (Portable Setup)
+
+Copy the entire `hmimap-web/` folder to the new PC, then run:
+
+```bash
+cd hmimap-web
+./setup.sh   # Auto-installs Node.js, Python, PM2, and all dependencies
+```
+
+The `setup.sh` script handles:
+- Node.js v22 installation
+- Python 3 + pip
+- `npm install` (Node dependencies)
+- `pip3 install` (Python dependencies: ezdxf, Pillow, numpy)
+- PM2 installation
+- Application start
+
+### 4.2 Manual Setup (Advanced)
+
+**Python dependencies:**
+```bash
+pip3 install -r requirements.txt
+```
+
+**Node dependencies:**
+```bash
+npm install
+```
+
+**Start:**
+```bash
+pm2 start ecosystem.config.cjs
+```
+
+**Access:** http://localhost:4003
+
+### 4.3 Prerequisites
 
 ```bash
 # Check versions
